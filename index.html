@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+  </head>
+  <body>
+    <canvas id="canvas" style="border: 1px solid;"></canvas>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io.connect();
+      var c = document.getElementById("canvas");
+      var ctx = c.getContext("2d");
+      var mouse = {};
+    </script>
+    <script>
+        socket.on("resizeCanv", (size) => {
+            c.height = size.height/3;
+            c.width = size.width/3 * 2;
+        });
+        socket.on("mouseUpdate", (mouse) => {
+            ctx.clearRect(0, 0, c.width, c.height);
+            ctx.beginPath();
+            ctx.fillRect(c.width/2 - 1, 0, 2, c.height);
+            ctx.fillRect((mouse.x/3) + (c.width/2) - 2, 0, 4, c.height);
+            ctx.fillRect(0, (mouse.y/3) - 2, c.width, 4);
+            ctx.fillRect((mouse.x/3) + (c.width/2) - 8, mouse.y/3 - 8, 16, 16);
+            ctx.stroke();
+
+        });
+    </script>
+  </body>
+</html>
